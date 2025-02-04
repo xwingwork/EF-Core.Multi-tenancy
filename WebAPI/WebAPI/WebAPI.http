@@ -9,3 +9,9 @@ GET {{WebAPI_HostAddress}}/todos/1
 Accept: application/json
 
 ###
+
+GET {{WebAPI_HostAddress}}/todos/test
+Accept: application/json
+TenantId: gm9415
+
+###

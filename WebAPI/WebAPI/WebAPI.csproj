@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Expansion\Expansion.csproj" />
     <ProjectReference Include="..\WebAPI.ServiceDefaults\WebAPI.ServiceDefaults.csproj" />
   </ItemGroup>
 

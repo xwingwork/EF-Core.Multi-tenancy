@@ -1,8 +1,13 @@
+using Expansion.TenantAgency;
+using Expansion.TenantAgency.MultiTenant;
 using System.Text.Json.Serialization;
+
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.AddServiceDefaults();
+builder.Services
+    .AddTenantAgencyService();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -27,6 +32,7 @@ todosApi.MapGet("/{id}", (int id) =>
     sampleTodos.FirstOrDefault(a => a.Id == id) is { } todo
         ? Results.Ok(todo)
         : Results.NotFound());
+todosApi.MapGet("/test", (Tenant tenant) => tenant.TenantId);
 
 app.Run();
 
