@@ -23,4 +23,4 @@
 
 ## POC情境的操作步驟
 
-* [透過Aspire編排環境](/Aspire/透過Aspire編排環境.md)
+* [透過Aspire編排環境](Aspire/透過Aspire編排環境.md)
