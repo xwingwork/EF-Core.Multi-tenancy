@@ -23,4 +23,4 @@
 
 ## POC情境的操作步驟
 
-<!-- TODO 選擇編排工具，設計POC流程 -->
+* [透過Aspire編排環境](/Aspire/透過Aspire編排環境.md)
