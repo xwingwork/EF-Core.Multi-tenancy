@@ -3,19 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Expansion.TenantAgency.ContextFactory;
 
-internal class AgencyScopedFactory<TContext> : IDbContextFactory<TContext> where TContext : DbContext
+internal class AgencyScopedFactory<TContext>(
+    // DbContext pooling https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics?tabs=with-di%2Cexpression-api-with-constant#dbcontext-pooling
+    IDbContextFactory<TContext> pooledFactory,
+    StoreConnection storeConnection) : IDbContextFactory<TContext> where TContext : DbContext
 {
-    private readonly IDbContextFactory<TContext> pooledFactory;
-    private readonly StoreConnection storeConnection;
-
-    public AgencyScopedFactory(
-        // DbContext pooling https://learn.microsoft.com/en-us/ef/core/performance/advanced-performance-topics?tabs=with-di%2Cexpression-api-with-constant#dbcontext-pooling
-        IDbContextFactory<TContext> pooledFactory,
-        StoreConnection storeConnection)
-    {
-        this.pooledFactory = pooledFactory ?? throw new ArgumentNullException(nameof(pooledFactory));
-        this.storeConnection = storeConnection;
-    }
+    private readonly IDbContextFactory<TContext> pooledFactory = pooledFactory ?? throw new ArgumentNullException(nameof(pooledFactory));
+    private readonly StoreConnection storeConnection = storeConnection;
 
     public TContext CreateDbContext()
     {

@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Expansion\Expansion.csproj" />
     <ProjectReference Include="..\WebAPI.ServiceDefaults\WebAPI.ServiceDefaults.csproj" />
   </ItemGroup>

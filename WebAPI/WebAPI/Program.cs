@@ -1,13 +1,17 @@
 using Expansion.TenantAgency;
 using Expansion.TenantAgency.MultiTenant;
+using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using WebAPI.Data;
 
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
 builder.AddServiceDefaults();
 builder.Services
-    .AddTenantAgencyService();
+    .AddTenantAgencyService()
+    .AddAgencyStoreFactoryService<WeatherForecastDbContext>(context =>
+        context.UseNpgsql());
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
