@@ -37,7 +37,10 @@ todosApi.MapGet("/{id}", (int id) =>
         ? Results.Ok(todo)
         : Results.NotFound());
 todosApi.MapGet("/test", (Tenant tenant) => tenant.TenantId);
-
+todosApi.MapGet("/testTenant", async (
+         WeatherForecastDbContext dbContex
+        , CancellationToken cancellationToken) =>
+            await dbContex.Database.CanConnectAsync(cancellationToken));
 app.Run();
 
 public record Todo(int Id, string? Title, DateOnly? DueBy = null, bool IsComplete = false);

@@ -15,3 +15,15 @@ Accept: application/json
 TenantId: gm9415
 
 ###
+
+GET {{WebAPI_HostAddress}}/todos/testTenant
+Accept: application/json
+TenantId: gm9415
+
+###
+
+GET {{WebAPI_HostAddress}}/todos/testTenant
+Accept: application/json
+TenantId: fffffff
+
+###
