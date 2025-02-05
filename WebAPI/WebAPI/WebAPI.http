@@ -27,3 +27,9 @@ Accept: application/json
 TenantId: fffffff
 
 ###
+
+GET {{WebAPI_HostAddress}}/todos/AgencyInfo
+Accept: application/json
+TenantId: gm9415
+
+###

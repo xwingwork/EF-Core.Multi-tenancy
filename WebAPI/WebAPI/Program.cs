@@ -2,7 +2,7 @@ using Expansion.TenantAgency;
 using Expansion.TenantAgency.MultiTenant;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
-using WebAPI.Data;
+using WebAPI.Data.Context;
 
 
 var builder = WebApplication.CreateSlimBuilder(args);
@@ -41,6 +41,11 @@ todosApi.MapGet("/testTenant", async (
          WeatherForecastDbContext dbContex
         , CancellationToken cancellationToken) =>
             await dbContex.Database.CanConnectAsync(cancellationToken));
+todosApi.MapGet("/AgencyInfo", async (
+         WeatherForecastDbContext dbContex
+        , CancellationToken cancellationToken) =>
+             await dbContex.hr010s.Where(a => a.comps == string.Empty).FirstOrDefaultAsync(cancellationToken));
+
 app.Run();
 
 public record Todo(int Id, string? Title, DateOnly? DueBy = null, bool IsComplete = false);
