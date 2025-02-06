@@ -1,31 +1,11 @@
-﻿using Aspire.Hosting;
-using Aspire.Hosting.ApplicationModel;
-using Aspire.Hosting.Testing;
-using Microsoft.Extensions.DependencyInjection;
+﻿using WebAPI.Tests.Testing;
 
 namespace WebAPI.Integration.Tests;
 
-// https://learn.microsoft.com/en-us/dotnet/aspire/testing/manage-app-host?pivots=xunit#use-the-distributedapplicationtestingbuilder-class
-public class MultipleSingletonTests : IAsyncLifetime
+// https://xunit.net/docs/shared-context#collection-fixture
+[Collection(AppHostCollection.Name)]
+public class MultipleSingletonTests(AppHostFixture appHostFixture)
 {
-    private DistributedApplication? app;
-    public required HttpClient httpClient;
-
-    public async Task InitializeAsync()
-    {
-        var appHost = await DistributedApplicationTestingBuilder
-   .CreateAsync<Projects.WebAPI_AppHost>();
-
-        app = await appHost.BuildAsync();
-        var resourceNotificationService = app.Services.GetRequiredService<ResourceNotificationService>();
-        await app.StartAsync();
-
-        await resourceNotificationService.WaitForResourceAsync("webapi", KnownResourceStates.Running).WaitAsync(TimeSpan.FromSeconds(30));
-        httpClient = app.CreateHttpClient("webapi");
-    }
-
-    public async Task DisposeAsync() => await app.DisposeAsync();
-
     /// <summary>
     /// a0ac
     /// oacloud
@@ -38,9 +18,9 @@ public class MultipleSingletonTests : IAsyncLifetime
     [InlineData("gm9415", @"{""comps"":""                                    "",""comp"":""gm9415              "",""unino"":""01681969"",""comp_name"":""金讚清潔社"",""comp_name_short"":""金讚"",""comp_en"":"""",""orgmark"":""2"",""lang"":"" "",""org_empname"":"""",""title"":"""",""fiorg"":""     "",""taxid"":""            "",""labno"":""000000000           "",""heano"":""0                   "",""heano_ar"":""  "",""phone"":"""",""phone_fax"":"""",""adzip"":""          "",""adcity"":"""",""adcity2"":"""",""adother"":"""",""adother2"":"""",""dt_start"":""        "",""dt_stop"":""        "",""website"":"""",""email"":"""",""date_modi"":""        "",""time_modi"":""      "",""empno_modi"":""                    "",""date_cret"":""20141231"",""time_cret"":""141420"",""empno_cret"":""admin               "",""date_tran"":""        "",""time_tran"":""      "",""empno_tran"":""                    "",""empname_tax"":"""",""taxid2"":""            "",""adzip_tax"":""          "",""adcity_tax"":"""",""adcity2_tax"":"""",""adother_tax"":"""",""adother2_tax"":"""",""insno"":""01681969"",""bank"":"""",""account"":"""",""stype3"":"" "",""app_service_uuid"":""                                    "",""fiorg1"":""     ""}")]
     public async Task GetWebResourceRootReturns(string tenantId, string agencyInfo)
     {
-        httpClient.DefaultRequestHeaders.Clear();
-        httpClient.DefaultRequestHeaders.Add("TenantId", tenantId);
-        var response = await httpClient.GetAsync("/todos/AgencyInfo");
+        appHostFixture.httpClient.DefaultRequestHeaders.Clear();
+        appHostFixture.httpClient.DefaultRequestHeaders.Add("TenantId", tenantId);
+        var response = await appHostFixture.httpClient.GetAsync("/todos/AgencyInfo");
         var responseContent = await response.Content.ReadAsStringAsync();
 
         // Assert
