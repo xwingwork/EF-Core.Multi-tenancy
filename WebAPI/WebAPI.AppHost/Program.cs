@@ -1,23 +1,23 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var postgres = builder
-    .AddPostgres("postgres") // °õ¦æ­ÓÅé¡A¥]§t¹w³]¸ê®Æ®w¡Chttps://learn.microsoft.com/zh-tw/dotnet/aspire/database/postgresql-entity-framework-integration?tabs=dotnet-cli
+    .AddPostgres("postgres") // åŸ·è¡Œå€‹é«”ï¼ŒåŒ…å«é è¨­è³‡æ–™åº«ã€‚https://learn.microsoft.com/zh-tw/dotnet/aspire/database/postgresql-entity-framework-integration?tabs=dotnet-cli
     .WithBindMount("Development/Postgres", "/docker-entrypoint-initdb.d") // Seed data https://learn.microsoft.com/en-us/dotnet/aspire/database/seed-database-data?tabs=sql-server#database-seeding-examples
-    .WithPgAdmin() // °õ¦æ­ÓÅéºô­¶«È¤áºİ-ºŞ²z¤u¨ã
-    .WithPgWeb(); // ¸ê®Æ®wºô­¶«È¤áºİ-¸ê®Æªí¬d¸ß¤u¨ã
+    .WithPgAdmin() // åŸ·è¡Œå€‹é«”ç¶²é å®¢æˆ¶ç«¯-ç®¡ç†å·¥å…·
+    .WithPgWeb(); // è³‡æ–™åº«ç¶²é å®¢æˆ¶ç«¯-è³‡æ–™è¡¨æŸ¥è©¢å·¥å…·
 
-// ½s±Æ¡G²K¥[¸ê®Æ®wªººÊ±±¡B³s½u¦r¦ê¶Ç»¼(µ¹PgWeb)
-var ¾_¥¹¶³ºİ¨Æ·~³¡ = postgres.AddDatabase("a0ac");
-var ¶³ºİ¤H¸ê¨t²Î®i¥Ü¥­¥x = postgres.AddDatabase("oacloud");
-var ¦Æ¬ü = postgres.AddDatabase("gm9415");
+// ç·¨æ’ï¼šæ·»åŠ è³‡æ–™åº«çš„ç›£æ§ã€é€£ç·šå­—ä¸²å‚³é(çµ¦PgWeb)
+var éœ‡æ—¦é›²ç«¯äº‹æ¥­éƒ¨ = postgres.AddDatabase("a0ac");
+var é›²ç«¯äººè³‡ç³»çµ±å±•ç¤ºå¹³å° = postgres.AddDatabase("oacloud");
+var æ±ç¾ = postgres.AddDatabase("gm9415");
 
 builder.AddProject<Projects.WebAPI>("webapi")
-                            // ªA°È¶¡ªºÃöÁp©Ê
-                            .WithReference(¾_¥¹¶³ºİ¨Æ·~³¡) // ªA°Èªº¬Û¨Ì©Ê¡BÀô¹Ò°Ñ¼Æ¶Ç»¼
-                                .WaitFor(¾_¥¹¶³ºİ¨Æ·~³¡) // ±Ò°Êªº¬Û¨Ì©Ê
-                            .WithReference(¶³ºİ¤H¸ê¨t²Î®i¥Ü¥­¥x)
-                                .WaitFor(¶³ºİ¤H¸ê¨t²Î®i¥Ü¥­¥x)
-                            .WithReference(¦Æ¬ü)
-                                .WaitFor(¦Æ¬ü);
+                            // æœå‹™é–“çš„é—œè¯æ€§
+                            .WithReference(éœ‡æ—¦é›²ç«¯äº‹æ¥­éƒ¨) // æœå‹™çš„ç›¸ä¾æ€§ã€ç’°å¢ƒåƒæ•¸å‚³é
+                                .WaitFor(éœ‡æ—¦é›²ç«¯äº‹æ¥­éƒ¨) // å•Ÿå‹•çš„ç›¸ä¾æ€§
+                            .WithReference(é›²ç«¯äººè³‡ç³»çµ±å±•ç¤ºå¹³å°)
+                                .WaitFor(é›²ç«¯äººè³‡ç³»çµ±å±•ç¤ºå¹³å°)
+                            .WithReference(æ±ç¾)
+                                .WaitFor(æ±ç¾);
 
 builder.Build().Run();
